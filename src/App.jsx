@@ -14,6 +14,7 @@ const send = message => {
 export const App = () => {
   const [response, setResponse] = useState('Hi, I\'m Cosmo')
   const [value, setValue] = useState('')
+  const [loading, setLoading] = useState(false)
 
   return (
     <div className="wrapper">
@@ -21,7 +22,6 @@ export const App = () => {
       <Canvas
         alpha="true"
         className="robot"
-        frameloop="demand"
         camera={{ position: [-4, 3, 6], fov: 45, near: 0.1, far: 500 }}
       >
         <ambientLight intensity={10} />
@@ -30,7 +30,7 @@ export const App = () => {
         <directionalLight position={[0, 0, -2]} />
         <directionalLight position={[0, 0, -2]} />
         <OrbitControls enableZoom={false} enablePan={false} />
-        <Model scale={0.6} rotation={[0, 4.2, 0]} position={[0, -1, 0]} />
+        <Model scale={0.6} rotation={[0, 4.2, 0]} position={[0, -1, 0]} isRotating={loading} />
       </Canvas>
       <div className='question'>
         <input
@@ -40,9 +40,11 @@ export const App = () => {
           onChange={e => setValue(e.target.value)}
         />
         <button onClick={async () => {
+          setLoading(true)
           const request = await send(value)
           const { response } = await request.json()
           setResponse(response)
+          setLoading(false)
         }}>Send</button>
       </div>
     </div>

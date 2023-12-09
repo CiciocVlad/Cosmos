@@ -4,15 +4,15 @@ import { useFrame } from "@react-three/fiber";
 
 export function Model({ scale, isRotating, materialProps, ...props }) {
   const { nodes, materials } = useGLTF("/cosmos/BB-8-1.glb")
-  const groupRef = useRef()
+  const ref = useRef()
 
   useFrame(() => {
-    if (groupRef.current)
-      groupRef.current.rotation.y += 0.1
+    if (isRotating)
+      ref.current.rotation.y += 0.1
   })
 
   return (
-    <group {...props} dispose={null} scale={scale} ref={groupRef}>
+    <group {...props} dispose={null} scale={scale} ref={ref}>
       <group
         position={[0.955, 3.554, -0.416]}
         rotation={[-0.756, 0.237, -1.332]}
