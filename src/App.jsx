@@ -14,11 +14,28 @@ const send = message => {
   )
 }
 
+const fetchAudio = async () => {
+  fetch('http://127.0.0.1:5000/audio') // Assuming Flask server is running on the same domain
+  .then(response => response.blob())
+  .then(blob => {
+    const audioUrl = URL.createObjectURL(blob);
+    const audio = new Audio(audioUrl);
+    audio.play();
+  })
+  .catch(error => {
+    console.error('Error fetching audio:', error);
+  });
+};
+
+
 export const App = () => {
   const [response, setResponse] = useState("Hi, I'm Cosmo")
   const [value, setValue] = useState('')
   const [loading, setLoading] = useState(false)
   const [animation, setAnimation] = useState('')
+  const [audioSrc, setAudioSrc] = useState('');
+
+    
 
   const submit = async () => {
     setAnimation('animated')
@@ -26,6 +43,9 @@ export const App = () => {
     setValue('')
     const request = await send(value)
     const { response } = await request.json()
+    if(response){
+      const audio = await fetchAudio()
+    }
     setResponse(response)
     setLoading(false)
     setAnimation('')
