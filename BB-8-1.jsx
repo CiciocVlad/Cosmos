@@ -1,18 +1,71 @@
-import React, { useRef } from 'react'
-import { useGLTF } from '@react-three/drei'
-import { useFrame } from '@react-three/fiber'
+import React, { useRef } from 'react';
+import { useGLTF } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
 
-export function Model({ scale, isRotating, materialProps, ...props }) {
-  const { nodes, materials } = useGLTF('/cosmos/BB-8-1.glb')
-  const ref = useRef()
+export function Model({
+  scale,
+  isRotating,
+  isJumping,
+  materialProps,
+  ...props
+}) {
+  const { nodes, materials } = useGLTF('/cosmos/BB-8-1.glb');
+  const ref = useRef(4.2);
+
+  let jumpHeight = -1.8;
+  const jumpSpeed = 0.05;
+  let isJumpingUp = true;
+
+  const jump = () => {
+    if (isJumpingUp) {
+      ref.current.position.y += jumpSpeed;
+
+      if (ref.current.position.y >= -0.3) {
+        isJumpingUp = false;
+      }
+    } else {
+      ref.current.position.y -= jumpSpeed;
+      if (ref.current.position.y <= jumpHeight) {
+        isJumpingUp = true;
+      }
+    }
+  };
+
+  const stopJump = () => {
+    const landingPosition = -1;
+    const smoothLandSpeed = 0.02;
+
+    if (ref.current.position.y < landingPosition) {
+      ref.current.position.y += smoothLandSpeed;
+
+      if (ref.current.position.y >= landingPosition) {
+        ref.current.position.y = landingPosition;
+        isJumpingUp = false;
+      }
+    } else if (ref.current.position.y > landingPosition) {
+      ref.current.position.y -= smoothLandSpeed;
+
+      if (ref.current.position.y <= landingPosition) {
+        ref.current.position.y = landingPosition;
+        isJumpingUp = true;
+      }
+    }
+  };
 
   useFrame(() => {
-    if (isRotating) ref.current.rotation.y += 0.1
-    else {
-      const deg = (ref.current.rotation.y * 180) / Math.PI
-      if (deg % 360 < 240 || deg % 360 > 260) ref.current.rotation.y += 0.1
+    if (isRotating) {
+      ref.current.rotation.y += 0.1;
+    } else {
+      const deg = (ref.current.rotation.y * 180) / Math.PI;
+      if (deg % 360 < 240 || deg % 360 > 260) ref.current.rotation.y += 0.1;
     }
-  })
+
+    if (isJumping) {
+      jump();
+    } else {
+      stopJump();
+    }
+  });
 
   return (
     <group {...props} dispose={null} scale={scale} ref={ref}>
@@ -97,7 +150,7 @@ export function Model({ scale, isRotating, materialProps, ...props }) {
         />
       </group>
     </group>
-  )
+  );
 }
 
-useGLTF.preload('/BB-8-1.glb')
+useGLTF.preload('/BB-8-1.glb');
