@@ -18,6 +18,18 @@ export const App = () => {
   const [response, setResponse] = useState("Hi, I'm Cosmo")
   const [value, setValue] = useState('')
   const [loading, setLoading] = useState(false)
+  const [animation, setAnimation] = useState('')
+
+  const submit = async () => {
+    setAnimation('animated')
+    setLoading(true)
+    setValue('')
+    const request = await send(value)
+    const { response } = await request.json()
+    setResponse(response)
+    setLoading(false)
+    setAnimation('')
+  }
 
   return (
     <div className="wrapper">
@@ -46,17 +58,17 @@ export const App = () => {
           value={value}
           placeholder="Ask me about fantasy books..."
           onChange={e => setValue(e.target.value)}
-        />
-        <button
-          onClick={async () => {
-            setLoading(true)
-            const request = await send(value)
-            const { response } = await request.json()
-            setResponse(response)
-            setLoading(false)
+          onKeyDown={e => {
+            if (e.key === 'Enter') submit()
           }}
-        >
-          Send
+        />
+        <button onClick={submit}>
+          <img src="/img/notification_box.svg" />
+          <img
+            id="to_animate"
+            className={animation}
+            src="/img/notification_box.svg"
+          />
         </button>
       </div>
     </div>

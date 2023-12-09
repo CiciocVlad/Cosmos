@@ -31,9 +31,36 @@
 }
 
 .question > button {
+  position: relative;
   height: 100%;
   background-color: transparent;
   border: none;
   outline: none;
   cursor: pointer;
+}
+
+.question > button > img {
+  height: 100%;
+}
+
+#to_animate {
+  position: absolute;
+  left: 0;
+}
+
+.animated {
+  animation: send;
+  animation-duration: 2s;
+}
+
+@keyframes send {
+  from {
+    opacity: 100%;
+    top: 0;
+  }
+
+  to {
+    top: -50px;
+    opacity: 0;
+  }
 }

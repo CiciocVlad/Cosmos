@@ -8,6 +8,10 @@ export function Model({ scale, isRotating, materialProps, ...props }) {
 
   useFrame(() => {
     if (isRotating) ref.current.rotation.y += 0.1
+    else {
+      const deg = (ref.current.rotation.y * 180) / Math.PI
+      if (deg % 360 < 240 || deg % 360 > 260) ref.current.rotation.y += 0.1
+    }
   })
 
   return (
