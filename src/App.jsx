@@ -6,19 +6,22 @@ import { useState } from 'react'
 
 const send = message => {
   const api = 'http://127.0.0.1:5000'
-  return fetch(`${api}/chat?` + new URLSearchParams({
-    message
-  }))
+  return fetch(
+    `${api}/chat?` +
+      new URLSearchParams({
+        message
+      })
+  )
 }
 
 export const App = () => {
-  const [response, setResponse] = useState('Hi, I\'m Cosmo')
+  const [response, setResponse] = useState("Hi, I'm Cosmo")
   const [value, setValue] = useState('')
   const [loading, setLoading] = useState(false)
 
   return (
     <div className="wrapper">
-      <h1 className='answer'>{response}</h1>
+      <h1 className="answer">{response}</h1>
       <Canvas
         alpha="true"
         className="robot"
@@ -30,22 +33,31 @@ export const App = () => {
         <directionalLight position={[0, 0, -2]} />
         <directionalLight position={[0, 0, -2]} />
         <OrbitControls enableZoom={false} enablePan={false} />
-        <Model scale={0.6} rotation={[0, 4.2, 0]} position={[0, -1, 0]} isRotating={loading} />
+        <Model
+          scale={0.6}
+          rotation={[0, 4.2, 0]}
+          position={[0, -1, 0]}
+          isRotating={loading}
+        />
       </Canvas>
-      <div className='question'>
+      <div className="question">
         <input
           type="text"
           value={value}
           placeholder="Ask me about fantasy books..."
           onChange={e => setValue(e.target.value)}
         />
-        <button onClick={async () => {
-          setLoading(true)
-          const request = await send(value)
-          const { response } = await request.json()
-          setResponse(response)
-          setLoading(false)
-        }}>Send</button>
+        <button
+          onClick={async () => {
+            setLoading(true)
+            const request = await send(value)
+            const { response } = await request.json()
+            setResponse(response)
+            setLoading(false)
+          }}
+        >
+          Send
+        </button>
       </div>
     </div>
   )
