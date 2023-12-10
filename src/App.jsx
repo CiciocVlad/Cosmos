@@ -30,7 +30,7 @@ const fetchAudio = async () => {
 
 // const inactivityThreshold = 35000;
 export const App = () => {
-  const [response, setResponse] = useState("Hi, I'm Cosmo");
+  const [response, setResponse] = useState("Hi, I'm Cosmos");
   const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [jumping, setJumping] = useState(false);

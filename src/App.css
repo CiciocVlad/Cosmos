@@ -11,6 +11,18 @@
 
 .answer {
   font-family: 'Comic Neue', cursive;
+  position: absolute;
+  top: 16px;
+  z-index: 10000;
+  width: fit-content;
+  font-size: 25px;
+  background-color: rgba(255, 232, 248, 0.5);
+  border-radius: 12px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-weight: lighter;
 }
 
 .question {

@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
 
 export function Model({
   scale,
@@ -67,6 +68,11 @@ export function Model({
     }
   });
 
+  const bodyColor = new THREE.Color(184/255, 39/255, 65/255);
+  const headColor = new THREE.Color(182/255, 62/255, 84/255)
+  const eyePieceColor = new THREE.Color(222/255, 122/255, 140/255)
+
+
   return (
     <group {...props} dispose={null} scale={scale} ref={ref}>
       <group
@@ -77,12 +83,12 @@ export function Model({
         <mesh
           geometry={nodes.Cilindro002.geometry}
           material={materials['Material.005']}
-          material-color={'red'}
+          material-color={bodyColor}
         />
         <mesh
           geometry={nodes.Cilindro002_1.geometry}
           material={materials['Material.006']}
-          material-color={'red'}
+          material-color={bodyColor}
         />
       </group>
       <mesh
@@ -91,7 +97,7 @@ export function Model({
         position={[0.871, 3.843, 0.041]}
         rotation={[0, 0, -1.269]}
         scale={0.293}
-        material-color={'red'}
+        material-color={eyePieceColor}
       />
       <mesh
         geometry={nodes.Ojo.geometry}
@@ -121,12 +127,12 @@ export function Model({
         <mesh
           geometry={nodes.Esfera002.geometry}
           material={materials.Material}
-          material-color={'red'}
+          material-color={headColor}
         />
         <mesh
           geometry={nodes.Esfera002_1.geometry}
           material={materials.Linea}
-          material-color={'red'}
+          material-color={bodyColor}
         />
         <mesh
           geometry={nodes.Esfera002_2.geometry}
