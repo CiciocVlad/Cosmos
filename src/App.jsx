@@ -1,12 +1,12 @@
-import './App.css';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import { Model } from '../BB-8-1';
-import { useEffect, useState } from 'react';
-import Typewriter from './Typewriter';
+import "./App.css";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import { Model } from "../BB-8-1";
+import { useEffect, useState } from "react";
+import Typewriter from "./Typewriter";
 
 const send = (message) => {
-  const api = 'http://127.0.0.1:5000';
+  const api = "http://127.0.0.1:5000";
   return fetch(
     `${api}/chat?` +
       new URLSearchParams({
@@ -15,13 +15,26 @@ const send = (message) => {
   );
 };
 // const inactivityThreshold = 35000;
+const fetchAudio = async () => {
+  fetch("http://127.0.0.1:5000/audio") // Assuming Flask server is running on the same domain
+    .then((response) => response.blob())
+    .then((blob) => {
+      const audioUrl = URL.createObjectURL(blob);
+      const audio = new Audio(audioUrl);
+      audio.play();
+    })
+    .catch((error) => {
+      console.error("Error fetching audio:", error);
+    });
+};
+
 export const App = () => {
   const [response, setResponse] = useState("Hi, I'm Cosmo");
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [jumping, setJumping] = useState(false);
   // const [activityTimer, setActivityTimer] = useState(null);
-  const [animation, setAnimation] = useState('');
+  const [animation, setAnimation] = useState("");
 
   // const resetActivityTimer = () => {
   //   if (activityTimer) {
@@ -66,18 +79,22 @@ export const App = () => {
   // useEffect(() => {
   //   resetActivityTimer();
   // }, []);
+  const [audioSrc, setAudioSrc] = useState("");
 
   const submit = async () => {
-    setAnimation('animated');
+    setAnimation("animated");
     setLoading(true);
-    setValue('');
+    setValue("");
     const request = await send(value);
     const { response } = await request.json();
+    if (response) {
+      const audio = await fetchAudio();
+    }
     const responseToLoweCase = response.toLowerCase();
     if (
-      responseToLoweCase.includes('yay') ||
-      responseToLoweCase.includes('awesome') ||
-      responseToLoweCase.includes('!!')
+      responseToLoweCase.includes("yay") ||
+      responseToLoweCase.includes("awesome") ||
+      responseToLoweCase.includes("!!")
     ) {
       setJumping(true);
       const jumpTimer = setTimeout(() => {
@@ -88,7 +105,7 @@ export const App = () => {
     }
     setResponse(response);
     setLoading(false);
-    setAnimation('');
+    setAnimation("");
     // resetActivityTimer();
   };
 
@@ -123,7 +140,7 @@ export const App = () => {
           placeholder="Ask me about fantasy books..."
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') submit();
+            if (e.key === "Enter") submit();
           }}
         />
         <button onClick={submit}>
